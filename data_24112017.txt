@@ -1,0 +1,7 @@
+Data:
+
+1. futures of stock indices of main markets US, EU, Asia, Eastern Europe
+2. currencies - DONE
+3. bond futures
+
+
