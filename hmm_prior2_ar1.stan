@@ -12,8 +12,11 @@ data {
 
 parameters {
   
-  //AR(1) parameters
-  real<lower=-1,upper=1> rho[K];
+  //AR(p) parameters
+  real<lower=-1,upper=1> rho1[K];
+  //real<lower=-1,upper=1> rho2[K];
+  //real<lower=-1,upper=1> rho3[K];
+  //real<lower=-1,upper=1> rho4[K];
   
   // Discrete state model
   simplex[K] pi1;                   // initial state probabilities
@@ -26,23 +29,30 @@ parameters {
 }
 
 transformed parameters {
+  
   vector[K] logalpha[T];
 
   { // Forward algorithm log p(z_t = j | x_{1:t})
     real accumulator[K];
-
+    
     logalpha[1] = log(pi1) + normal_lpdf(y[1] | mu, sigma);
+    //logalpha[2] = log(pi1) + normal_lpdf(y[2] | mu, sigma);
+    //logalpha[3] = log(pi1) + normal_lpdf(y[3] | mu, sigma);
+    //logalpha[4] = log(pi1) + normal_lpdf(y[4] | mu, sigma);
 
     for (t in 2:T) {
       for (j in 1:K) { // j = current (t)
         for (i in 1:K) { // i = previous (t-1)
                          // Murphy (2012) Eq. 17.48
                          // belief state      + transition prob + local evidence at t
-          accumulator[i] = logalpha[t-1, i] + log(A[i, j]) + normal_lpdf(y[t] | mu[j] + rho[j]*y[t-1], sigma[j]);
+          accumulator[i] = logalpha[t-1, i] + log(A[i, j]) + 
+                                              normal_lpdf(y[t] | mu[j] + rho1[j]*y[t-1], sigma[j]);
         }
         logalpha[t, j] = log_sum_exp(accumulator);
       }
     }
+    
+    
   } // Forward
 }
 
@@ -85,7 +95,7 @@ generated quantities {
         for (i in 1:K) { // i = next (t)
                          // Murphy (2012) Eq. 17.58
                          // backwards t    + transition prob + local evidence at t
-          accumulator[i] = logbeta[t, i] + log(A[j, i]) + normal_lpdf(y[t] | mu[i] + rho[i]*y[t-1], sigma[i]);
+          accumulator[i] = logbeta[t, i] + log(A[j, i]) + normal_lpdf(y[t] | mu[i], sigma[i]);
           }
         logbeta[t-1, j] = log_sum_exp(accumulator);
       }
@@ -117,7 +127,7 @@ generated quantities {
         delta[t, j] = negative_infinity();
         for (i in 1:K) { // i = previous (t-1)
           real logp;
-          logp = delta[t-1, i] + log(A[i, j]) + normal_lpdf(y[t] | mu[j] + rho[j]*y[t-1], sigma[j]);
+          logp = delta[t-1, i] + log(A[i, j]) + normal_lpdf(y[t] | mu[j], sigma[j]);
           if (logp > delta[t, j]) {
             bpointer[t, j] = i;
             delta[t, j] = logp;
