@@ -50,9 +50,9 @@ model {
   //mu[4] ~ normal(0.05, 0.05);
   //mu[5] ~ normal(0.1, 0.1);
   
-  sigma[1] ~ inv_gamma(7,1/7);
+  sigma[1] ~ inv_gamma(7,7);
   sigma[2] ~ inv_gamma(0.1,0.1);
-  sigma[3] ~ inv_gamma(7,1/7);
+  sigma[3] ~ inv_gamma(7,7);
   
   for(j in 1:K){
     A[j] ~ beta(1,1);
