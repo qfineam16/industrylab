@@ -7,9 +7,8 @@ functions {
 data {
   int<lower=1> T;                   // number of observations (length)
   int<lower=1> K;                   // number of hidden states
-  int<lower=1> H;                   // number of hyperparams
   real y[T];                        // observations
-  real hyperparam[H];               // hyperparameters for prior mean
+  real hyperparam[K];               // hyperparameters for prior mean
 }
 
 parameters {
@@ -45,16 +44,13 @@ transformed parameters {
 }
 
 model {
-  //Prior for mu
-  mu[1] ~ normal(hyperparam[1], hyperparam[4]);
-  mu[2] ~ normal(hyperparam[2], hyperparam[5]);
-  mu[3] ~ normal(hyperparam[3], hyperparam[6]);
+  mu[1] ~ normal(hyperparam[1], 0.05);
+  mu[2] ~ normal(hyperparam[2], 0.001);
+  mu[3] ~ normal(hyperparam[3], 0.05);
+  //mu[4] ~ normal(0.05, 0.05);
+  //mu[5] ~ normal(0.1, 0.1);
   
-  //Prior for sigma
-  sigma[1] ~ inv_gamma(hyperparam[7], hyperparam[10]);
-  sigma[2] ~ inv_gamma(hyperparam[8], hyperparam[11]);
-  sigma[3] ~ inv_gamma(hyperparam[9], hyperparam[12]);
-  
+  sigma ~ inv_gamma(0.1,0.1);
   for(j in 1:K){
     A[j] ~ beta(1,1);
   }
