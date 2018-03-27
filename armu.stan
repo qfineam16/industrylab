@@ -2,7 +2,6 @@ data {
   int<lower=1> T;                   // number of observations (length)
   int<lower=1> K;                   // number of hidden states
   real y[T];                        // observations
-  real hyperparam[K];               // hyperparameters for prior mean
 }
 
 parameters {
