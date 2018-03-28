@@ -7,9 +7,8 @@ functions {
 data {
   int<lower=1> T;                   // number of observations (length)
   int<lower=1> K;                   // number of hidden states
-  int<lower=1> H;                   // number of hyperparams
   real y[T];                        // observations
-  real hyperparam[H];               // hyperparameters for prior mean
+  real hyperparam;               // hyperparameters for prior mean
 }
 
 parameters {
