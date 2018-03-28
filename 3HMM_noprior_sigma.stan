@@ -20,6 +20,7 @@ parameters {
 
   // Continuous observation model
   ordered[K] mu; // observation means
+  vector[K] sigma;
   real<lower=0, upper=0.01> sigma[1];
   real<lower=0, upper=0.005> sigma[2];
   real<lower=0, upper=0.01> sigma[3];
