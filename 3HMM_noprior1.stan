@@ -19,9 +19,9 @@ parameters {
 
   // Continuous observation model
   ordered[K] mu; // observation means
-  real<lower=0, upper=0.01> sigma1;
-  real<lower=0, upper=0.005> sigma2;
-  real<lower=0, upper=0.01> sigma3;
+  real<lower=0.000001, upper=0.01> sigma1;
+  real<lower=0.000001, upper=0.005> sigma2;
+  real<lower=0.000001, upper=0.01> sigma3;
 }
 
 transformed parameters {
