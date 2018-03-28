@@ -26,12 +26,14 @@ parameters {
 }
 
 transformed parameters {
+  
+  vector[K] logalpha[T];
+  
   vector[K] sigma;
   sigma[1] = sigma1;
   sigma[2] = sigma2;
   sigma[3] = sigma3;
   
-  vector[K] logalpha[T];
 
   { // Forward algorithm log p(z_t = j | x_{1:t})
     real accumulator[K];
