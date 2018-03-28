@@ -48,7 +48,7 @@ model {
   mu[2] ~ normal(hyperparam[2], 0.0001);
   mu[3] ~ normal(hyperparam[3], 0.005);
 
-  sigma ~ inv_gamma(0.1,0.1) T[,0.01];
+  sigma ~ inv_gamma(0.1,0.1)T[,0.01];
   
   for(j in 1:K){
     A[j] ~ beta(1,1);
